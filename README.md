@@ -100,7 +100,7 @@ XML        ✅    ✅   ✅   ✅    ✅
 
 ## 📄 License
 
-[Add your license here]
+MIT
 
 ## 🙏 Acknowledgments
 

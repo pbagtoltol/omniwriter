@@ -1,0 +1,28 @@
+{
+  "customers": [
+    {
+      "id": "CUST001",
+      "name": "John Doe",
+      "email": "john@example.com",
+      "phone": "+1-555-0100",
+      "account_type": "Premium",
+      "balance": 1250.50
+    },
+    {
+      "id": "CUST002",
+      "name": "Jane Smith",
+      "email": "jane@example.com",
+      "phone": "+1-555-0200",
+      "account_type": "Standard",
+      "balance": 450.00
+    },
+    {
+      "id": "CUST003",
+      "name": "Bob Johnson",
+      "email": "bob@example.com",
+      "phone": "+1-555-0300",
+      "account_type": "Premium",
+      "balance": 2100.75
+    }
+  ]
+}

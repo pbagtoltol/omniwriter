@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<record>
+  <weight_unit>KG</weight_unit>
+  <destination_city>New York</destination_city>
+  <destination_country>US</destination_country>
+  <destination_zip>10001</destination_zip>
+  <event_date>20241103</event_date>
+  <event_state>NY</event_state>
+  <tracking_number>TRK001</tracking_number>
+  <destination_state>NY</destination_state>
+  <event_city>New York</event_city>
+  <event_time>1200</event_time>
+  <weight>25.5</weight>
+</record>

@@ -1,0 +1,36 @@
+{
+  "parser_settings": {
+    "version": "omni.2.1",
+    "file_format_type": "json"
+  },
+  "writer_settings": {
+    "version": "omni.1.0",
+    "file_format_type": "csv"
+  },
+  "output_declaration": {
+    "delimiter": ",",
+    "columns": [
+      {"name": "order_id", "path": "order_id"},
+      {"name": "customer_name", "path": "customer_name"},
+      {"name": "customer_email", "path": "customer_email"},
+      {"name": "order_date", "path": "order_date"},
+      {"name": "status", "path": "status"},
+      {"name": "item_count", "path": "item_count"},
+      {"name": "total", "path": "total"}
+    ]
+  },
+  "transform_declarations": {
+    "FINAL_OUTPUT": {
+      "xpath": "/orders/*",
+      "object": {
+        "order_id": {"xpath": "order_id"},
+        "customer_name": {"xpath": "customer/name"},
+        "customer_email": {"xpath": "customer/email"},
+        "order_date": {"xpath": "order_date"},
+        "status": {"xpath": "status"},
+        "item_count": {"xpath": "count(items/*)"},
+        "total": {"xpath": "total"}
+      }
+    }
+  }
+}

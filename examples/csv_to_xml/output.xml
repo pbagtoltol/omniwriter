@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<record>
+  <quantity>5</quantity>
+  <total>99.95</total>
+  <customer_email>john@example.com</customer_email>
+  <customer_name>John Doe</customer_name>
+  <order_id>ORD-001</order_id>
+  <product_sku>WIDGET-A</product_sku>
+</record>
+<record>
+  <total>99.98</total>
+  <customer_email>jane@example.com</customer_email>
+  <customer_name>Jane Smith</customer_name>
+  <order_id>ORD-002</order_id>
+  <product_sku>GADGET-B</product_sku>
+  <quantity>2</quantity>
+</record>
+<record>
+  <quantity>10</quantity>
+  <total>150.00</total>
+  <customer_email>bob@example.com</customer_email>
+  <customer_name>Bob Johnson</customer_name>
+  <order_id>ORD-003</order_id>
+  <product_sku>WIDGET-C</product_sku>
+</record>

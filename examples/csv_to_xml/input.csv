@@ -1,0 +1,4 @@
+order_id,customer_name,customer_email,product_sku,quantity,total
+ORD-001,John Doe,john@example.com,WIDGET-A,5,99.95
+ORD-002,Jane Smith,jane@example.com,GADGET-B,2,99.98
+ORD-003,Bob Johnson,bob@example.com,WIDGET-C,10,150.00

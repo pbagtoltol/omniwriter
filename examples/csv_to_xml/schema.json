@@ -1,0 +1,48 @@
+{
+  "parser_settings": {
+    "version": "omni.2.1",
+    "file_format_type": "csv2"
+  },
+  "file_declaration": {
+    "delimiter": ",",
+    "records": [
+      {
+        "min": 1,
+        "max": 1,
+        "header": "^order_id,customer_name,customer_email,product_sku,quantity,total$"
+      },
+      {
+        "is_target": true,
+        "columns": [
+          {"name": "order_id"},
+          {"name": "customer_name"},
+          {"name": "customer_email"},
+          {"name": "product_sku"},
+          {"name": "quantity"},
+          {"name": "total"}
+        ]
+      }
+    ]
+  },
+  "writer_settings": {
+    "version": "omni.1.0",
+    "file_format_type": "xml"
+  },
+  "output_declaration": {
+    "root_element": "orders",
+    "record_element": "order"
+  },
+  "transform_declarations": {
+    "FINAL_OUTPUT": {
+      "xpath": "/",
+      "object": {
+        "order_id": {"xpath": "order_id"},
+        "customer_name": {"xpath": "customer_name"},
+        "customer_email": {"xpath": "customer_email"},
+        "product_sku": {"xpath": "product_sku"},
+        "quantity": {"xpath": "quantity"},
+        "total": {"xpath": "total"}
+      }
+    }
+  }
+}

@@ -1,0 +1,103 @@
+{
+  "parser_settings": {
+    "version": "omni.2.1",
+    "file_format_type": "edi"
+  },
+  "file_declaration": {
+    "segment_delimiter": "\n",
+    "element_delimiter": "*",
+    "segment_declarations": [
+      {
+        "name": "ISA",
+        "child_segments": [
+          {
+            "name": "GS",
+            "child_segments": [
+              {
+                "name": "scanInfo",
+                "type": "segment_group",
+                "is_target": true,
+                "min": 0,
+                "max": -1,
+                "child_segments": [
+                  {"name": "ST"},
+                  {
+                    "name": "B10",
+                    "elements": [
+                      {"index": 2, "name": "shipmentID"}
+                    ]
+                  },
+                  {"name": "L11"},
+                  {"name": "N1"},
+                  {"name": "N1"},
+                  {"name": "N3"},
+                  {
+                    "name": "N4",
+                    "elements": [
+                      {"index": 1, "name": "city"},
+                      {"index": 2, "name": "state"},
+                      {"index": 3, "name": "zip"},
+                      {"index": 4, "name": "country"}
+                    ]
+                  },
+                  {
+                    "name": "AT7",
+                    "elements": [
+                      {"index": 3, "name": "date"},
+                      {"index": 4, "name": "time"},
+                      {"index": 5, "name": "timezone"}
+                    ]
+                  },
+                  {
+                    "name": "MS1",
+                    "elements": [
+                      {"index": 1, "name": "eventCity"},
+                      {"index": 2, "name": "eventState"},
+                      {"index": 3, "name": "eventCountry"}
+                    ]
+                  },
+                  {
+                    "name": "AT8",
+                    "elements": [
+                      {"index": 2, "name": "weightUnit"},
+                      {"index": 3, "name": "weight"}
+                    ]
+                  },
+                  {"name": "SE"}
+                ]
+              }
+            ]
+          },
+          {"name": "GE"}
+        ]
+      },
+      {"name": "IEA"}
+    ]
+  },
+  "writer_settings": {
+    "version": "omni.1.0",
+    "file_format_type": "xml"
+  },
+  "output_declaration": {
+    "root_element": "shipments",
+    "record_element": "shipment"
+  },
+  "transform_declarations": {
+    "FINAL_OUTPUT": {
+      "xpath": "/",
+      "object": {
+        "tracking_number": {"xpath": "B10/shipmentID"},
+        "destination_city": {"xpath": "N4/city"},
+        "destination_state": {"xpath": "N4/state"},
+        "destination_zip": {"xpath": "N4/zip"},
+        "destination_country": {"xpath": "N4/country"},
+        "event_date": {"xpath": "AT7/date"},
+        "event_time": {"xpath": "AT7/time"},
+        "event_city": {"xpath": "MS1/eventCity"},
+        "event_state": {"xpath": "MS1/eventState"},
+        "weight": {"xpath": "AT8/weight", "type": "float"},
+        "weight_unit": {"xpath": "AT8/weightUnit"}
+      }
+    }
+  }
+}

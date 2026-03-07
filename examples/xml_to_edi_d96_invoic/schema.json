@@ -1,0 +1,221 @@
+{
+  "parser_settings": {
+    "version": "omni.2.1",
+    "file_format_type": "xml"
+  },
+  "writer_settings": {
+    "version": "omni.1.0",
+    "file_format_type": "edi"
+  },
+  "output_declaration": {
+    "segment_delimiter": "'",
+    "element_delimiter": "+",
+    "component_delimiter": ":"
+  },
+  "transform_declarations": {
+    "FINAL_OUTPUT": {
+      "xpath": "/invoice",
+      "object": {
+        "segments": {
+          "array": [
+            {
+              "object": {
+                "name": {"const": "UNH"},
+                "elements": {
+                  "array": [
+                    {"const": "1"},
+                    {"custom_func": {
+                      "name": "javascript",
+                      "args": [
+                        {"const": "['INVOIC', 'D', '96A', 'UN']"}
+                      ]
+                    }}
+                  ]
+                }
+              }
+            },
+            {
+              "object": {
+                "name": {"const": "BGM"},
+                "elements": {
+                  "array": [
+                    {"xpath": "header/invoice_type"},
+                    {"xpath": "header/invoice_number"},
+                    {"xpath": "header/function_code"}
+                  ]
+                }
+              }
+            },
+            {
+              "object": {
+                "name": {"const": "DTM"},
+                "elements": {
+                  "array": [
+                    {"custom_func": {
+                      "name": "javascript",
+                      "args": [
+                        {"const": "['137', date.replace(/-/g, ''), '102']"},
+                        {"const": "date"},
+                        {"xpath": "header/invoice_date"}
+                      ]
+                    }}
+                  ]
+                }
+              }
+            },
+            {
+              "object": {
+                "name": {"const": "NAD"},
+                "elements": {
+                  "array": [
+                    {"const": "BY"},
+                    {"custom_func": {
+                      "name": "javascript",
+                      "args": [
+                        {"const": "[id, '', '91']"},
+                        {"const": "id"},
+                        {"xpath": "parties/buyer/id"}
+                      ]
+                    }},
+                    {"xpath": "parties/buyer/name"}
+                  ]
+                }
+              }
+            },
+            {
+              "object": {
+                "name": {"const": "NAD"},
+                "elements": {
+                  "array": [
+                    {"const": "SU"},
+                    {"custom_func": {
+                      "name": "javascript",
+                      "args": [
+                        {"const": "[id, '', '91']"},
+                        {"const": "id"},
+                        {"xpath": "parties/supplier/id"}
+                      ]
+                    }},
+                    {"xpath": "parties/supplier/name"}
+                  ]
+                }
+              }
+            },
+            {
+              "xpath": "line_items/line",
+              "object": {
+                "name": {"const": "LIN"},
+                "elements": {
+                  "array": [
+                    {"xpath": "line_number"},
+                    {"const": ""},
+                    {"custom_func": {
+                      "name": "javascript",
+                      "args": [
+                        {"const": "[pid, 'SA']"},
+                        {"const": "pid"},
+                        {"xpath": "product_id"}
+                      ]
+                    }}
+                  ]
+                }
+              }
+            },
+            {
+              "xpath": "line_items/line",
+              "object": {
+                "name": {"const": "QTY"},
+                "elements": {
+                  "array": [
+                    {"custom_func": {
+                      "name": "javascript",
+                      "args": [
+                        {"const": "['47', String(qty)]"},
+                        {"const": "qty"},
+                        {"xpath": "quantity"}
+                      ]
+                    }}
+                  ]
+                }
+              }
+            },
+            {
+              "xpath": "line_items/line",
+              "object": {
+                "name": {"const": "PRI"},
+                "elements": {
+                  "array": [
+                    {"custom_func": {
+                      "name": "javascript",
+                      "args": [
+                        {"const": "['AAA', String(price)]"},
+                        {"const": "price"},
+                        {"xpath": "unit_price"}
+                      ]
+                    }}
+                  ]
+                }
+              }
+            },
+            {
+              "xpath": "line_items/line",
+              "object": {
+                "name": {"const": "MOA"},
+                "elements": {
+                  "array": [
+                    {"custom_func": {
+                      "name": "javascript",
+                      "args": [
+                        {"const": "['203', String(amt)]"},
+                        {"const": "amt"},
+                        {"xpath": "line_amount"}
+                      ]
+                    }}
+                  ]
+                }
+              }
+            },
+            {
+              "object": {
+                "name": {"const": "UNS"},
+                "elements": {
+                  "array": [
+                    {"const": "S"}
+                  ]
+                }
+              }
+            },
+            {
+              "object": {
+                "name": {"const": "MOA"},
+                "elements": {
+                  "array": [
+                    {"custom_func": {
+                      "name": "javascript",
+                      "args": [
+                        {"const": "['79', String(total)]"},
+                        {"const": "total"},
+                        {"xpath": "summary/total_amount"}
+                      ]
+                    }}
+                  ]
+                }
+              }
+            },
+            {
+              "object": {
+                "name": {"const": "UNT"},
+                "elements": {
+                  "array": [
+                    {"const": "14"},
+                    {"const": "1"}
+                  ]
+                }
+              }
+            }
+          ]
+        }
+      }
+    }
+  }
+}

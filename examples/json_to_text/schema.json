@@ -1,0 +1,26 @@
+{
+  "parser_settings": {
+    "version": "omni.2.1",
+    "file_format_type": "json"
+  },
+  "writer_settings": {
+    "version": "omni.1.0",
+    "file_format_type": "text"
+  },
+  "output_declaration": {
+    "template": "Customer: {{id}} | Name: {{name}} | Email: {{email}} | Type: {{account_type}} | Balance: ${{balance}}",
+    "record_separator": "\n"
+  },
+  "transform_declarations": {
+    "FINAL_OUTPUT": {
+      "xpath": "/customers/*",
+      "object": {
+        "id": {"xpath": "id"},
+        "name": {"xpath": "name"},
+        "email": {"xpath": "email"},
+        "account_type": {"xpath": "account_type"},
+        "balance": {"xpath": "balance", "type": "float"}
+      }
+    }
+  }
+}

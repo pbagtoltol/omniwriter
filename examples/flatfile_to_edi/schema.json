@@ -1,0 +1,79 @@
+{
+  "parser_settings": {
+    "version": "omni.2.1",
+    "file_format_type": "csv"
+  },
+  "file_declaration": {
+    "delimiter": "|",
+    "data_row_index": 1,
+    "columns": [
+      {"name": "type"},
+      {"name": "c2"},
+      {"name": "c3"},
+      {"name": "c4"},
+      {"name": "c5"},
+      {"name": "c6"},
+      {"name": "c7"},
+      {"name": "c8"},
+      {"name": "c9"}
+    ]
+  },
+  "writer_settings": {
+    "version": "omni.1.0",
+    "file_format_type": "edi"
+  },
+  "output_declaration": {
+    "segment_delimiter": "~",
+    "element_delimiter": "*",
+    "component_delimiter": ":"
+  },
+  "transform_declarations": {
+    "FINAL_OUTPUT": {
+      "xpath": ".",
+      "object": {
+        "segments": {
+          "array": [
+            {
+              "xpath": ".[type='ORDER']",
+              "object": {
+                "name": {
+                  "const": "BEG"
+                },
+                "elements": {
+                  "array": [
+                    {"const": "00"},
+                    {"const": "SA"},
+                    {"xpath": "c2"},
+                    {},
+                    {"xpath": "c3"}
+                  ]
+                }
+              }
+            },
+            {
+              "xpath": ".[type='ITEM']",
+              "object": {
+                "name": {
+                  "const": "PO1"
+                },
+                "elements": {
+                  "array": [
+                    {},
+                    {"xpath": "c5"},
+                    {"const": "EA"},
+                    {"xpath": "c6"},
+                    {},
+                    {"const": "IN"},
+                    {"xpath": "c3"},
+                    {"const": "VN"},
+                    {"xpath": "c4"}
+                  ]
+                }
+              }
+            }
+          ]
+        }
+      }
+    }
+  }
+}

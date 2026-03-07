@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<invoice>
+  <header>
+    <invoice_number>INV-2024-001</invoice_number>
+    <invoice_date>2024-01-15</invoice_date>
+    <invoice_type>380</invoice_type>
+    <function_code>9</function_code>
+  </header>
+  <parties>
+    <buyer>
+      <id>CUST001</id>
+      <name>Acme Corporation</name>
+      <address>
+        <street>123 Main St</street>
+        <city>New York</city>
+        <postal_code>10001</postal_code>
+        <country>US</country>
+      </address>
+    </buyer>
+    <supplier>
+      <id>SUPP001</id>
+      <name>Global Suppliers Inc</name>
+      <address>
+        <street>456 Industrial Blvd</street>
+        <city>Los Angeles</city>
+        <postal_code>90001</postal_code>
+        <country>US</country>
+      </address>
+    </supplier>
+  </parties>
+  <line_items>
+    <line>
+      <line_number>1</line_number>
+      <product_id>WIDGET-A</product_id>
+      <description>Premium Widget Type A</description>
+      <quantity>100</quantity>
+      <unit_price>19.99</unit_price>
+      <line_amount>1999.00</line_amount>
+    </line>
+    <line>
+      <line_number>2</line_number>
+      <product_id>GADGET-B</product_id>
+      <description>Advanced Gadget Model B</description>
+      <quantity>50</quantity>
+      <unit_price>49.99</unit_price>
+      <line_amount>2499.50</line_amount>
+    </line>
+  </line_items>
+  <summary>
+    <total_amount>4498.50</total_amount>
+    <currency>USD</currency>
+  </summary>
+</invoice>

@@ -1,0 +1,294 @@
+{
+  "file_declaration": {
+    "element_delimiter": "*",
+    "segment_declarations": [
+      {
+        "child_segments": [
+          {
+            "_comment": "functional group",
+            "child_segments": [
+              {
+                "child_segments": [
+                  {
+                    "name": "ST"
+                  },
+                  {
+                    "elements": [
+                      {
+                        "index": 2,
+                        "name": "shipmentIdentificationNumber"
+                      }
+                    ],
+                    "name": "B10"
+                  },
+                  {
+                    "name": "L11"
+                  },
+                  {
+                    "name": "L11"
+                  },
+                  {
+                    "name": "N1"
+                  },
+                  {
+                    "name": "N1"
+                  },
+                  {
+                    "name": "N3"
+                  },
+                  {
+                    "elements": [
+                      {
+                        "_comment": "E19",
+                        "index": 1,
+                        "name": "cityName"
+                      },
+                      {
+                        "index": 2,
+                        "name": "provinceCode"
+                      },
+                      {
+                        "index": 3,
+                        "name": "postalCode"
+                      },
+                      {
+                        "index": 4,
+                        "name": "countryCode"
+                      }
+                    ],
+                    "name": "N4"
+                  },
+                  {
+                    "name": "LX"
+                  },
+                  {
+                    "elements": [
+                      {
+                        "index": 1,
+                        "name": "shipmentStatusCode"
+                      },
+                      {
+                        "index": 2,
+                        "name": "shipmentStatusReasonCode"
+                      },
+                      {
+                        "index": 5,
+                        "name": "date"
+                      },
+                      {
+                        "index": 6,
+                        "name": "time"
+                      },
+                      {
+                        "index": 7,
+                        "name": "timeCode"
+                      }
+                    ],
+                    "name": "AT7"
+                  },
+                  {
+                    "elements": [
+                      {
+                        "index": 1,
+                        "name": "cityName"
+                      },
+                      {
+                        "index": 2,
+                        "name": "provinceCode"
+                      },
+                      {
+                        "index": 3,
+                        "name": "countryCode"
+                      }
+                    ],
+                    "name": "MS1"
+                  },
+                  {
+                    "min": 0,
+                    "name": "L11"
+                  },
+                  {
+                    "elements": [
+                      {
+                        "index": 2,
+                        "name": "weightUOM"
+                      },
+                      {
+                        "index": 3,
+                        "name": "weight"
+                      }
+                    ],
+                    "name": "AT8"
+                  },
+                  {
+                    "name": "SE"
+                  }
+                ],
+                "is_target": true,
+                "max": -1,
+                "min": 0,
+                "name": "scanInfo",
+                "type": "segment_group"
+              }
+            ],
+            "name": "GS"
+          },
+          {
+            "name": "GE"
+          }
+        ],
+        "name": "ISA"
+      },
+      {
+        "name": "IEA"
+      }
+    ],
+    "segment_delimiter": "\n"
+  },
+  "output_declaration": {
+    "columns": [
+      {
+        "name": "tracking_number",
+        "path": "tracking_number"
+      },
+      {
+        "name": "weight",
+        "path": "weight"
+      },
+      {
+        "name": "weight_uom",
+        "path": "weight_uom"
+      },
+      {
+        "name": "pickup_date",
+        "path": "pickup_date"
+      },
+      {
+        "name": "delivery_date",
+        "path": "delivery_date"
+      }
+    ],
+    "delimiter": ","
+  },
+  "parser_settings": {
+    "file_format_type": "edi",
+    "version": "omni.2.1"
+  },
+  "transform_declarations": {
+    "FINAL_OUTPUT": {
+      "object": {
+        "dest": {
+          "object": {
+            "city": {
+              "xpath": "N4/cityName"
+            },
+            "country": {
+              "xpath": "N4/countryCode"
+            },
+            "state": {
+              "xpath": "N4/provinceCode"
+            },
+            "zip": {
+              "xpath": "N4/postalCode"
+            }
+          }
+        },
+        "events": {
+          "array": [
+            {
+              "object": {
+                "date": {
+                  "template": "event_date_template"
+                },
+                "date_raw": {
+                  "template": "event_date_template"
+                },
+                "location": {
+                  "object": {
+                    "city": {
+                      "xpath": "MS1/cityName"
+                    },
+                    "country": {
+                      "xpath": "MS1/countryCode"
+                    },
+                    "state": {
+                      "xpath": "MS1/provinceCode"
+                    }
+                  }
+                }
+              }
+            }
+          ]
+        },
+        "tracking_number": {
+          "xpath": "B10/shipmentIdentificationNumber"
+        },
+        "weight": {
+          "type": "float",
+          "xpath": "AT8/weight"
+        },
+        "weight_uom": {
+          "custom_func": {
+            "args": [
+              {
+                "const": "uom=='K'?'KG':'LBS'"
+              },
+              {
+                "const": "uom"
+              },
+              {
+                "xpath": "AT8/weightUOM"
+              }
+            ],
+            "name": "javascript"
+          }
+        }
+      }
+    },
+    "event_date_template": {
+      "custom_func": {
+        "args": [
+          {
+            "custom_func": {
+              "args": [
+                {
+                  "xpath": "AT7/date"
+                },
+                {
+                  "xpath": "AT7/time"
+                }
+              ],
+              "name": "concat"
+            }
+          },
+          {
+            "_comment": "from tz; some of canadapost tz codes are non-IANA-standard shortcuts, we need to translate them into standard IANA tz",
+            "custom_func": {
+              "args": [
+                {
+                  "const": "caTZ=='PT'?'America/Vancouver':caTZ=='MT'?'America/Edmonton':caTZ=='CT'?'America/Winnipeg':caTZ=='ET'?'America/Toronto':caTZ=='AT'?'America/Halifax':caTZ=='NT'?'America/St_Johns':caTZ=='PS'?'Etc/GMT+8':caTZ=='PST'?'Etc/GMT+8':caTZ=='MS'?'Etc/GMT+7':caTZ=='MST'?'Etc/GMT+7':caTZ=='CS'?'Etc/GMT+6':caTZ=='CST'?'Etc/GMT+6':caTZ=='ES'?'Etc/GMT+5':caTZ=='EST'?'Etc/GMT+5':caTZ=='AS'?'Etc/GMT+4':caTZ=='AST'?'Etc/GMT+4':''"
+                },
+                {
+                  "const": "caTZ"
+                },
+                {
+                  "xpath": "AT7/timeCode"
+                }
+              ],
+              "name": "javascript"
+            }
+          },
+          {
+            "_comment": "to tz",
+            "const": ""
+          }
+        ],
+        "name": "dateTimeToRFC3339"
+      }
+    }
+  },
+  "writer_settings": {
+    "file_format_type": "csv",
+    "version": "omni.1.0"
+  }
+}

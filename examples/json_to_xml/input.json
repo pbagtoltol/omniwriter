@@ -1,0 +1,68 @@
+{
+  "orders": [
+    {
+      "order_id": "ORD-001",
+      "customer": {
+        "name": "John Doe",
+        "email": "john@example.com",
+        "phone": "+1-555-0100"
+      },
+      "items": [
+        {
+          "sku": "WIDGET-A",
+          "quantity": 5,
+          "price": 19.99
+        },
+        {
+          "sku": "GADGET-B",
+          "quantity": 2,
+          "price": 49.99
+        }
+      ],
+      "total": 199.93,
+      "status": "shipped",
+      "order_date": "2024-01-15"
+    },
+    {
+      "order_id": "ORD-002",
+      "customer": {
+        "name": "Jane Smith",
+        "email": "jane@example.com",
+        "phone": "+1-555-0200"
+      },
+      "items": [
+        {
+          "sku": "WIDGET-C",
+          "quantity": 10,
+          "price": 15.00
+        }
+      ],
+      "total": 150.00,
+      "status": "pending",
+      "order_date": "2024-01-16"
+    },
+    {
+      "order_id": "ORD-003",
+      "customer": {
+        "name": "Bob Johnson",
+        "email": "bob@example.com",
+        "phone": "+1-555-0300"
+      },
+      "items": [
+        {
+          "sku": "GADGET-D",
+          "quantity": 3,
+          "price": 29.99
+        },
+        {
+          "sku": "WIDGET-E",
+          "quantity": 7,
+          "price": 12.50
+        }
+      ],
+      "total": 177.47,
+      "status": "delivered",
+      "order_date": "2024-01-17"
+    }
+  ]
+}

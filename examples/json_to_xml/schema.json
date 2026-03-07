@@ -1,0 +1,29 @@
+{
+  "parser_settings": {
+    "version": "omni.2.1",
+    "file_format_type": "json"
+  },
+  "writer_settings": {
+    "version": "omni.1.0",
+    "file_format_type": "xml"
+  },
+  "output_declaration": {
+    "root_element": "orders",
+    "record_element": "order"
+  },
+  "transform_declarations": {
+    "FINAL_OUTPUT": {
+      "xpath": "/orders/*",
+      "object": {
+        "order_id": {"xpath": "order_id"},
+        "customer_name": {"xpath": "customer/name"},
+        "customer_email": {"xpath": "customer/email"},
+        "customer_phone": {"xpath": "customer/phone"},
+        "order_date": {"xpath": "order_date"},
+        "status": {"xpath": "status"},
+        "item_count": {"xpath": "count(items/*)"},
+        "total": {"xpath": "total"}
+      }
+    }
+  }
+}

@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<record>
+  <order_id>ORD-001</order_id>
+  <status>shipped</status>
+  <total>199.93</total>
+  <customer_email>john@example.com</customer_email>
+  <customer_name>John Doe</customer_name>
+  <customer_phone>+1-555-0100</customer_phone>
+  <order_date>2024-01-15</order_date>
+</record>
+<record>
+  <total>150</total>
+  <customer_email>jane@example.com</customer_email>
+  <customer_name>Jane Smith</customer_name>
+  <customer_phone>+1-555-0200</customer_phone>
+  <order_date>2024-01-16</order_date>
+  <order_id>ORD-002</order_id>
+  <status>pending</status>
+</record>
+<record>
+  <customer_phone>+1-555-0300</customer_phone>
+  <order_date>2024-01-17</order_date>
+  <order_id>ORD-003</order_id>
+  <status>delivered</status>
+  <total>177.47</total>
+  <customer_email>bob@example.com</customer_email>
+  <customer_name>Bob Johnson</customer_name>
+</record>

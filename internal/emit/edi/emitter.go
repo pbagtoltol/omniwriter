@@ -7,9 +7,11 @@ import (
 
 // Config holds EDI-specific output configuration.
 type Config struct {
-	SegmentDelimiter   string
-	ElementDelimiter   string
-	ComponentDelimiter string
+	SegmentDelimiter    string
+	ElementDelimiter    string
+	ComponentDelimiter  string
+	RepetitionDelimiter string
+	IgnoreCRLF          bool
 }
 
 // DefaultConfig returns EDI emitter defaults per X12 standard.
@@ -34,6 +36,9 @@ func WriteRecord(out *strings.Builder, config Config, payload map[string]interfa
 	if cfg.ComponentDelimiter == "" {
 		cfg.ComponentDelimiter = ":"
 	}
+	if cfg.RepetitionDelimiter == "" {
+		cfg.RepetitionDelimiter = "^"
+	}
 
 	segs, ok := payload["segments"].([]interface{})
 	if !ok || len(segs) == 0 {
@@ -51,12 +56,13 @@ func WriteRecord(out *strings.Builder, config Config, payload map[string]interfa
 			return fmt.Errorf("segment missing name")
 		}
 
+		segName = maybeStripCRLF(segName, cfg.IgnoreCRLF)
 		out.WriteString(segName)
 
 		rawElems, _ := segMap["elements"].([]interface{})
 		for _, e := range rawElems {
 			out.WriteString(cfg.ElementDelimiter)
-			out.WriteString(stringifyElement(e, cfg.ComponentDelimiter))
+			out.WriteString(stringifyElement(e, cfg.ComponentDelimiter, cfg.RepetitionDelimiter, cfg.IgnoreCRLF))
 		}
 
 		out.WriteString(cfg.SegmentDelimiter)
@@ -65,17 +71,34 @@ func WriteRecord(out *strings.Builder, config Config, payload map[string]interfa
 	return nil
 }
 
-// stringifyElement handles EDI element serialization, including composite elements.
-func stringifyElement(v interface{}, compDelim string) string {
+// stringifyElement handles EDI element serialization, including composite and repeating elements.
+// Elements can be:
+// - Simple values: "ABC"
+// - Composite (array of values): ["A", "B", "C"] -> "A:B:C"
+// - Repeating (array of arrays): [["A", "B"], ["C", "D"]] -> "A:B^C:D"
+func stringifyElement(v interface{}, compDelim, repDelim string, ignoreCRLF bool) string {
 	switch t := v.(type) {
 	case []interface{}:
+		// Check if this is a repeating element (array of arrays)
+		if len(t) > 0 {
+			if _, isArray := t[0].([]interface{}); isArray {
+				// This is a repeating element
+				repetitions := make([]string, 0, len(t))
+				for _, rep := range t {
+					repetitions = append(repetitions, stringifyElement(rep, compDelim, repDelim, ignoreCRLF))
+				}
+				return strings.Join(repetitions, repDelim)
+			}
+		}
+		// This is a composite element
 		parts := make([]string, 0, len(t))
 		for _, sub := range t {
-			parts = append(parts, stringifyElement(sub, compDelim))
+			parts = append(parts, stringifyElement(sub, compDelim, repDelim, ignoreCRLF))
 		}
 		return strings.Join(parts, compDelim)
 	default:
-		return stringify(v)
+		s := stringify(v)
+		return maybeStripCRLF(s, ignoreCRLF)
 	}
 }
 
@@ -96,4 +119,15 @@ func stringify(v interface{}) string {
 	default:
 		return fmt.Sprintf("%v", t)
 	}
+}
+
+// maybeStripCRLF removes CR and LF characters from the string if ignoreCRLF is true.
+// This is useful when EDI data contains line breaks that should be ignored.
+func maybeStripCRLF(s string, ignoreCRLF bool) string {
+	if !ignoreCRLF {
+		return s
+	}
+	s = strings.ReplaceAll(s, "\r", "")
+	s = strings.ReplaceAll(s, "\n", "")
+	return s
 }

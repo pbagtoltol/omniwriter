@@ -131,3 +131,106 @@ func TestEDIEmitter_EmptyElements(t *testing.T) {
 		t.Errorf("Expected %q, got %q", expected, output)
 	}
 }
+
+func TestEDIEmitter_RepetitionDelimiter(t *testing.T) {
+	var out strings.Builder
+	config := Config{
+		SegmentDelimiter:    "~",
+		ElementDelimiter:    "*",
+		ComponentDelimiter:  ":",
+		RepetitionDelimiter: "^",
+	}
+
+	payload := map[string]interface{}{
+		"segments": []interface{}{
+			map[string]interface{}{
+				"name": "REF",
+				"elements": []interface{}{
+					"BM",
+					// Repeating element: multiple occurrences
+					[]interface{}{
+						[]interface{}{"123", "456"},
+						[]interface{}{"789", "ABC"},
+					},
+				},
+			},
+		},
+	}
+
+	if err := WriteRecord(&out, config, payload); err != nil {
+		t.Fatalf("WriteRecord failed: %v", err)
+	}
+
+	output := out.String()
+	// REF*BM*123:456^789:ABC~
+	expected := "REF*BM*123:456^789:ABC~"
+	if output != expected {
+		t.Errorf("Expected %q, got %q", expected, output)
+	}
+}
+
+func TestEDIEmitter_IgnoreCRLF(t *testing.T) {
+	var out strings.Builder
+	config := Config{
+		SegmentDelimiter:   "~",
+		ElementDelimiter:   "*",
+		ComponentDelimiter: ":",
+		IgnoreCRLF:         true,
+	}
+
+	payload := map[string]interface{}{
+		"segments": []interface{}{
+			map[string]interface{}{
+				"name": "TEST",
+				"elements": []interface{}{
+					"Line1\nLine2",
+					"Part1\r\nPart2",
+					"Normal",
+				},
+			},
+		},
+	}
+
+	if err := WriteRecord(&out, config, payload); err != nil {
+		t.Fatalf("WriteRecord failed: %v", err)
+	}
+
+	output := out.String()
+	// Should strip all \r and \n
+	expected := "TEST*Line1Line2*Part1Part2*Normal~"
+	if output != expected {
+		t.Errorf("Expected %q, got %q", expected, output)
+	}
+}
+
+func TestEDIEmitter_IgnoreCRLFDisabled(t *testing.T) {
+	var out strings.Builder
+	config := Config{
+		SegmentDelimiter:   "~",
+		ElementDelimiter:   "*",
+		ComponentDelimiter: ":",
+		IgnoreCRLF:         false,
+	}
+
+	payload := map[string]interface{}{
+		"segments": []interface{}{
+			map[string]interface{}{
+				"name": "TEST",
+				"elements": []interface{}{
+					"Line1\nLine2",
+				},
+			},
+		},
+	}
+
+	if err := WriteRecord(&out, config, payload); err != nil {
+		t.Fatalf("WriteRecord failed: %v", err)
+	}
+
+	output := out.String()
+	// Should keep \n when IgnoreCRLF is false
+	expected := "TEST*Line1\nLine2~"
+	if output != expected {
+		t.Errorf("Expected %q, got %q", expected, output)
+	}
+}

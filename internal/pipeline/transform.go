@@ -103,9 +103,11 @@ func transformToEDI(ctx context.Context, req types.TransformRequest, od *schema.
 	}
 
 	config := ediemit.Config{
-		SegmentDelimiter:   od.SegmentDelimiter,
-		ElementDelimiter:   od.ElementDelimiter,
-		ComponentDelimiter: od.ComponentDelimiter,
+		SegmentDelimiter:    od.SegmentDelimiter,
+		ElementDelimiter:    od.ElementDelimiter,
+		ComponentDelimiter:  od.ComponentDelimiter,
+		RepetitionDelimiter: od.RepetitionDelimiter,
+		IgnoreCRLF:          od.IgnoreCRLF,
 	}
 
 	var out strings.Builder

@@ -9,9 +9,11 @@ type WriterSettings struct {
 // OutputDeclaration contains format-specific output options.
 type OutputDeclaration struct {
 	// EDI options
-	SegmentDelimiter   string `json:"segment_delimiter,omitempty"`
-	ElementDelimiter   string `json:"element_delimiter,omitempty"`
-	ComponentDelimiter string `json:"component_delimiter,omitempty"`
+	SegmentDelimiter    string `json:"segment_delimiter,omitempty"`
+	ElementDelimiter    string `json:"element_delimiter,omitempty"`
+	ComponentDelimiter  string `json:"component_delimiter,omitempty"`
+	RepetitionDelimiter string `json:"repetition_delimiter,omitempty"`
+	IgnoreCRLF          bool   `json:"ignore_crlf,omitempty"`
 
 	// CSV options
 	Delimiter string      `json:"delimiter,omitempty"`

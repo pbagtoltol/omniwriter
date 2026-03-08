@@ -1,0 +1,96 @@
+{
+    "parser_settings": {
+        "version": "omni.2.1",
+        "file_format_type": "json"
+    },
+    "writer_settings": {
+        "version": "omni.1.0",
+        "file_format_type": "csv"
+    },
+    "output_declaration": {
+        "delimiter": ",",
+        "columns": [
+            { "name": "timestamp", "path": "timestamp" },
+            { "name": "level", "path": "level" },
+            { "name": "service", "path": "service" },
+            { "name": "message", "path": "message" },
+            { "name": "request_id", "path": "request_id" },
+            { "name": "user_id", "path": "user_id" },
+            { "name": "endpoint", "path": "endpoint" },
+            { "name": "status", "path": "status" },
+            { "name": "duration_category", "path": "duration_category" },
+            { "name": "error_summary", "path": "error_summary" }
+        ]
+    },
+    "transform_declarations": {
+        "FINAL_OUTPUT": {
+            "object": {
+                "timestamp": {
+                    "custom_func": {
+                        "name": "javascript",
+                        "args": [
+                            { "const": "ts.replace('T', ' ').replace('Z', '')" },
+                            { "const": "ts" },
+                            { "xpath": "timestamp" }
+                        ]
+                    }
+                },
+                "level": {
+                    "xpath": "level"
+                },
+                "service": {
+                    "xpath": "service"
+                },
+                "message": {
+                    "xpath": "message"
+                },
+                "request_id": {
+                    "xpath": "request_id"
+                },
+                "user_id": {
+                    "xpath": "user_id"
+                },
+                "endpoint": {
+                    "custom_func": {
+                        "name": "javascript",
+                        "args": [
+                            { "const": "ep || 'N/A'" },
+                            { "const": "ep" },
+                            { "xpath": "endpoint" }
+                        ]
+                    }
+                },
+                "status": {
+                    "custom_func": {
+                        "name": "javascript",
+                        "args": [
+                            { "const": "code ? code.toString() : 'N/A'" },
+                            { "const": "code" },
+                            { "xpath": "status_code", "type": "int" }
+                        ]
+                    }
+                },
+                "duration_category": {
+                    "custom_func": {
+                        "name": "javascript",
+                        "args": [
+                            { "const": "ms ? (ms < 50 ? 'fast' : ms < 100 ? 'normal' : 'slow') : 'N/A'" },
+                            { "const": "ms" },
+                            { "xpath": "response_time_ms", "type": "int" }
+                        ]
+                    }
+                },
+                "error_summary": {
+                    "custom_func": {
+                        "name": "javascript",
+                        "args": [
+                            { "const": "err ? err.substring(0, 50) : 'none'" },
+                            { "const": "err" },
+                            { "xpath": "error" }
+                        ]
+                    }
+                }
+            }
+        }
+    }
+}

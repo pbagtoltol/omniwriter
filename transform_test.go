@@ -998,6 +998,157 @@ func TestTransform_XMLToText_UsesOmniparserSample(t *testing.T) {
 	}
 }
 
+func TestTransform_FixedLengthToCSV_ComplexJavaScript(t *testing.T) {
+	t.Helper()
+
+	schema, err := os.ReadFile(filepath.Join("testdata", "fixedlength2", "transactions_to_csv.schema.json"))
+	if err != nil {
+		t.Fatalf("read schema: %v", err)
+	}
+	input, err := os.ReadFile(filepath.Join("testdata", "fixedlength2", "transactions.input.txt"))
+	if err != nil {
+		t.Fatalf("read input: %v", err)
+	}
+
+	res, err := Transform(context.Background(), TransformRequest{
+		SourceFormat: FormatCustom, // fixedlength2 is a custom format type
+		TargetFormat: FormatCSV,
+		Mapping:      schema,
+		Input:        bytes.NewReader(input),
+	})
+	if err != nil {
+		t.Fatalf("transform: %v", err)
+	}
+
+	output := string(res.Output)
+
+	// Parse CSV output
+	reader := csv.NewReader(strings.NewReader(output))
+	records, err := reader.ReadAll()
+	if err != nil {
+		t.Fatalf("parse csv output: %v", err)
+	}
+
+	// Should have 4 transaction rows (CSV emitter doesn't write headers)
+	if len(records) != 4 {
+		t.Fatalf("expected 4 rows (4 transactions), got %d\nOutput:\n%s", len(records), output)
+	}
+
+	// Verify each row has correct number of columns
+	for i, rec := range records {
+		if len(rec) != 7 {
+			t.Fatalf("row %d: expected 7 columns, got %d", i, len(rec))
+		}
+	}
+
+	// Verify first transaction (JavaScript custom functions working)
+	// TXN00001, SMITH/JOHN, account 12345, $1250.99 USD
+	row1 := records[0]
+	if row1[0] != "TXN-0000000001" {
+		t.Errorf("row 1 transaction_id: expected TXN-0000000001, got %s", row1[0])
+	}
+	if row1[1] != "SMITH, JOHN" {
+		t.Errorf("row 1 customer_name: expected 'SMITH, JOHN', got %s", row1[1])
+	}
+	if row1[2] != "12345" {
+		t.Errorf("row 1 account: expected 12345, got %s", row1[2])
+	}
+	if row1[3] != "1250.99" {
+		t.Errorf("row 1 amount_usd: expected 1250.99, got %s", row1[3])
+	}
+	if row1[4] != "USD" {
+		t.Errorf("row 1 currency_code: expected USD, got %s", row1[4])
+	}
+	if row1[5] != "2025-03-08 14:30:00" {
+		t.Errorf("row 1 transaction_date: expected '2025-03-08 14:30:00', got %s", row1[5])
+	}
+	if row1[6] != "Payment from account 12345 in USD" {
+		t.Errorf("row 1 description: expected 'Payment from account 12345 in USD', got %s", row1[6])
+	}
+
+	// Verify CAD conversion (row 2 - currency conversion in JavaScript)
+	row2 := records[2]
+	if row2[3] != "1875.00" { // 2500.00 CAD * 0.75 = 1875.00 USD
+		t.Errorf("row 2 amount_usd (CAD conversion): expected 1875.00, got %s", row2[3])
+	}
+	if row2[4] != "CAD" {
+		t.Errorf("row 2 currency_code: expected CAD, got %s", row2[4])
+	}
+}
+
+func TestTransform_FixedLengthToEDI_ComplexJavaScript(t *testing.T) {
+	t.Helper()
+
+	schema, err := os.ReadFile(filepath.Join("testdata", "fixedlength2", "transactions_to_edi.schema.json"))
+	if err != nil {
+		t.Fatalf("read schema: %v", err)
+	}
+	input, err := os.ReadFile(filepath.Join("testdata", "fixedlength2", "transactions.input.txt"))
+	if err != nil {
+		t.Fatalf("read input: %v", err)
+	}
+
+	res, err := Transform(context.Background(), TransformRequest{
+		SourceFormat: FormatCustom, // fixedlength2 is a custom format type
+		TargetFormat: FormatEDI,
+		Mapping:      schema,
+		Input:        bytes.NewReader(input),
+	})
+	if err != nil {
+		t.Fatalf("transform: %v", err)
+	}
+
+	output := string(res.Output)
+
+	// Should contain 4 transaction sets (4 * 4 segments each = 16 segments total)
+	segmentCount := strings.Count(output, "~")
+	if segmentCount != 16 {
+		t.Errorf("expected 16 segments (4 transactions * 4 segments), got %d", segmentCount)
+	}
+
+	// Verify first transaction
+	// ST*820*00001~N1*SMITH:JOHN*12345~AMT*USD*1250.99*20250308~SE*3*00001~
+	if !strings.Contains(output, "ST*820*00001~") {
+		t.Errorf("expected ST segment for transaction 1")
+	}
+	if !strings.Contains(output, "N1*SMITH:JOHN*12345~") {
+		t.Errorf("expected N1 segment with composite name for transaction 1")
+	}
+	if !strings.Contains(output, "AMT*USD*1250.99*20250308~") {
+		t.Errorf("expected AMT segment for transaction 1")
+	}
+	if !strings.Contains(output, "SE*3*00001~") {
+		t.Errorf("expected SE segment for transaction 1")
+	}
+
+	// Verify second transaction
+	if !strings.Contains(output, "ST*820*00002~") {
+		t.Errorf("expected ST segment for transaction 2")
+	}
+	if !strings.Contains(output, "N1*JOHNSON:MARY*23456~") {
+		t.Errorf("expected N1 segment with composite name for transaction 2")
+	}
+	if !strings.Contains(output, "AMT*USD*875.50*20250308~") {
+		t.Errorf("expected AMT segment for transaction 2")
+	}
+
+	// Verify third transaction (CAD)
+	if !strings.Contains(output, "N1*DOE:JANE*34567~") {
+		t.Errorf("expected N1 segment with composite name for transaction 3")
+	}
+	if !strings.Contains(output, "AMT*CAD*2500.00*20250308~") {
+		t.Errorf("expected AMT segment with CAD for transaction 3")
+	}
+
+	// Verify fourth transaction
+	if !strings.Contains(output, "N1*WILLIAMS:ROBERT*45678~") {
+		t.Errorf("expected N1 segment with composite name for transaction 4")
+	}
+	if !strings.Contains(output, "AMT*USD*325.75*20250308~") {
+		t.Errorf("expected AMT segment for transaction 4")
+	}
+}
+
 func withWriterBlocks(baseSchema []byte, overlays map[string]any) ([]byte, error) {
 	var m map[string]any
 	if err := json.Unmarshal(baseSchema, &m); err != nil {

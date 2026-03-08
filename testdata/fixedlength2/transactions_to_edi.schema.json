@@ -1,0 +1,136 @@
+{
+    "parser_settings": {
+        "version": "omni.2.1",
+        "file_format_type": "fixedlength2"
+    },
+    "file_declaration": {
+        "envelopes": [
+            {
+                "name": "header",
+                "header": "^HDR",
+                "columns": [
+                    { "name": "record_type", "start_pos": 1, "length": 3 },
+                    { "name": "batch_date", "start_pos": 4, "length": 8 },
+                    { "name": "batch_id", "start_pos": 12, "length": 8 }
+                ]
+            },
+            {
+                "name": "transaction",
+                "is_target": true,
+                "header": "^TXN",
+                "columns": [
+                    { "name": "record_type", "start_pos": 1, "length": 3 },
+                    { "name": "txn_id", "start_pos": 4, "length": 5 },
+                    { "name": "account_num", "start_pos": 9, "length": 5 },
+                    { "name": "last_name", "start_pos": 14, "length": 10 },
+                    { "name": "first_name", "start_pos": 24, "length": 10 },
+                    { "name": "amount_cents", "start_pos": 34, "length": 8 },
+                    { "name": "currency", "start_pos": 42, "length": 3 },
+                    { "name": "timestamp", "start_pos": 45, "length": 14 }
+                ]
+            },
+            {
+                "name": "trailer",
+                "header": "^TRL",
+                "columns": [
+                    { "name": "record_type", "start_pos": 1, "length": 3 },
+                    { "name": "record_count", "start_pos": 4, "length": 6 },
+                    { "name": "total_amount", "start_pos": 10, "length": 10 }
+                ]
+            }
+        ]
+    },
+    "writer_settings": {
+        "version": "omni.1.0",
+        "file_format_type": "edi"
+    },
+    "output_declaration": {
+        "segment_delimiter": "~",
+        "element_delimiter": "*",
+        "component_delimiter": ":"
+    },
+    "transform_declarations": {
+        "FINAL_OUTPUT": {
+            "object": {
+                "segments": {
+                    "array": [
+                        {
+                            "object": {
+                                "name": { "const": "ST" },
+                                "elements": {
+                                    "array": [
+                                        { "const": "820" },
+                                        { "xpath": "txn_id" }
+                                    ]
+                                }
+                            }
+                        },
+                        {
+                            "object": {
+                                "name": { "const": "N1" },
+                                "elements": {
+                                    "array": [
+                                        {
+                                            "custom_func": {
+                                                "name": "javascript",
+                                                "args": [
+                                                    { "const": "last.trim() + ':' + first.trim()" },
+                                                    { "const": "last" },
+                                                    { "xpath": "last_name" },
+                                                    { "const": "first" },
+                                                    { "xpath": "first_name" }
+                                                ]
+                                            }
+                                        },
+                                        { "xpath": "account_num" }
+                                    ]
+                                }
+                            }
+                        },
+                        {
+                            "object": {
+                                "name": { "const": "AMT" },
+                                "elements": {
+                                    "array": [
+                                        { "xpath": "currency" },
+                                        {
+                                            "custom_func": {
+                                                "name": "javascript",
+                                                "args": [
+                                                    { "const": "(cents / 100.0).toFixed(2)" },
+                                                    { "const": "cents" },
+                                                    { "xpath": "amount_cents", "type": "int" }
+                                                ]
+                                            }
+                                        },
+                                        {
+                                            "custom_func": {
+                                                "name": "javascript",
+                                                "args": [
+                                                    { "const": "ts.substring(0,4) + ts.substring(4,6) + ts.substring(6,8)" },
+                                                    { "const": "ts" },
+                                                    { "xpath": "timestamp" }
+                                                ]
+                                            }
+                                        }
+                                    ]
+                                }
+                            }
+                        },
+                        {
+                            "object": {
+                                "name": { "const": "SE" },
+                                "elements": {
+                                    "array": [
+                                        { "const": "3" },
+                                        { "xpath": "txn_id" }
+                                    ]
+                                }
+                            }
+                        }
+                    ]
+                }
+            }
+        }
+    }
+}

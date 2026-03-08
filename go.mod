@@ -2,7 +2,7 @@ module github.com/pbagtoltol/omniwriter
 
 go 1.23
 
-require github.com/jf-tech/omniparser v0.0.0
+require github.com/jf-tech/omniparser v1.0.5
 
 require (
 	github.com/antchfx/xpath v1.1.11 // indirect
@@ -20,5 +20,3 @@ require (
 	golang.org/x/net v0.0.0-20220722155237-a158d28d115b // indirect
 	golang.org/x/text v0.3.8 // indirect
 )
-
-replace github.com/jf-tech/omniparser => ../omniparser

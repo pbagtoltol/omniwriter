@@ -4,8 +4,6 @@ go 1.23
 
 replace github.com/pbagtoltol/omniwriter => ../..
 
-replace github.com/jf-tech/omniparser => ../../../omniparser
-
 require github.com/pbagtoltol/omniwriter v0.0.0
 
 require (

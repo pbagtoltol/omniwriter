@@ -15,8 +15,7 @@ import (
 func TestTransform_CSVToCSVPassthrough_UsesOmniparserSample(t *testing.T) {
 	t.Helper()
 
-	samplePath := filepath.Join("..", "omniparser", "extensions", "omniv21", "samples", "csv2", "1_single_row.input.csv")
-	input, err := os.ReadFile(samplePath)
+	input, err := os.ReadFile(filepath.Join("testdata", "csv2", "1_single_row.input.csv"))
 	if err != nil {
 		t.Fatalf("read sample input: %v", err)
 	}
@@ -49,8 +48,7 @@ func TestTransform_CSVToCSVPassthrough_UsesOmniparserSample(t *testing.T) {
 func TestTransform_JSONToEDI_WithWriterSettings(t *testing.T) {
 	t.Helper()
 
-	inputPath := filepath.Join("..", "omniparser", "extensions", "omniv21", "samples", "json", "1_single_object.input.json")
-	input, err := os.ReadFile(inputPath)
+	input, err := os.ReadFile(filepath.Join("testdata", "json", "1_single_object.input.json"))
 	if err != nil {
 		t.Fatalf("read sample input: %v", err)
 	}
@@ -103,13 +101,11 @@ func TestTransform_JSONToEDI_WithWriterSettings(t *testing.T) {
 func TestTransform_EDIToCSV_UsesOmniparserSample(t *testing.T) {
 	t.Helper()
 
-	schemaPath := filepath.Join("..", "omniparser", "extensions", "omniv21", "samples", "edi", "1_canadapost_edi_214.schema.json")
-	inputPath := filepath.Join("..", "omniparser", "extensions", "omniv21", "samples", "edi", "1_canadapost_edi_214.input.txt")
-	schemaBase, err := os.ReadFile(schemaPath)
+	schemaBase, err := os.ReadFile(filepath.Join("testdata", "edi", "1_canadapost_edi_214.schema.json"))
 	if err != nil {
 		t.Fatalf("read sample schema: %v", err)
 	}
-	input, err := os.ReadFile(inputPath)
+	input, err := os.ReadFile(filepath.Join("testdata", "edi", "1_canadapost_edi_214.input.txt"))
 	if err != nil {
 		t.Fatalf("read sample input: %v", err)
 	}
@@ -166,13 +162,11 @@ func TestTransform_EDIToCSV_UsesOmniparserSample(t *testing.T) {
 func TestTransform_CSVToEDI_UsesOmniparserSample(t *testing.T) {
 	t.Helper()
 
-	schemaPath := filepath.Join("..", "omniparser", "extensions", "omniv21", "samples", "csv2", "1_single_row.schema.json")
-	inputPath := filepath.Join("..", "omniparser", "extensions", "omniv21", "samples", "csv2", "1_single_row.input.csv")
-	schemaBase, err := os.ReadFile(schemaPath)
+	schemaBase, err := os.ReadFile(filepath.Join("testdata", "csv2", "1_single_row.schema.json"))
 	if err != nil {
 		t.Fatalf("read sample schema: %v", err)
 	}
-	input, err := os.ReadFile(inputPath)
+	input, err := os.ReadFile(filepath.Join("testdata", "csv2", "1_single_row.input.csv"))
 	if err != nil {
 		t.Fatalf("read sample input: %v", err)
 	}
@@ -232,8 +226,7 @@ func TestTransform_CSVToEDI_UsesOmniparserSample(t *testing.T) {
 func TestTransform_XMLToEDI_ComplexCompositeElements(t *testing.T) {
 	t.Helper()
 
-	inputPath := filepath.Join("..", "omniparser", "extensions", "omniv21", "samples", "xml", "2_multiple_objects.input.xml")
-	input, err := os.ReadFile(inputPath)
+	input, err := os.ReadFile(filepath.Join("testdata", "xml", "2_multiple_objects.input.xml"))
 	if err != nil {
 		t.Fatalf("read sample input: %v", err)
 	}
@@ -306,13 +299,11 @@ func TestTransform_XMLToEDI_ComplexCompositeElements(t *testing.T) {
 func TestTransform_EDIToJSON_UsesOmniparserSample(t *testing.T) {
 	t.Helper()
 
-	schemaPath := filepath.Join("..", "omniparser", "extensions", "omniv21", "samples", "edi", "1_canadapost_edi_214.schema.json")
-	inputPath := filepath.Join("..", "omniparser", "extensions", "omniv21", "samples", "edi", "1_canadapost_edi_214.input.txt")
-	schemaBase, err := os.ReadFile(schemaPath)
+	schemaBase, err := os.ReadFile(filepath.Join("testdata", "edi", "1_canadapost_edi_214.schema.json"))
 	if err != nil {
 		t.Fatalf("read sample schema: %v", err)
 	}
-	input, err := os.ReadFile(inputPath)
+	input, err := os.ReadFile(filepath.Join("testdata", "edi", "1_canadapost_edi_214.input.txt"))
 	if err != nil {
 		t.Fatalf("read sample input: %v", err)
 	}
@@ -366,8 +357,7 @@ func TestTransform_EDIToJSON_UsesOmniparserSample(t *testing.T) {
 func TestTransform_JSONToJSON_Passthrough(t *testing.T) {
 	t.Helper()
 
-	inputPath := filepath.Join("..", "omniparser", "extensions", "omniv21", "samples", "json", "1_single_object.input.json")
-	input, err := os.ReadFile(inputPath)
+	input, err := os.ReadFile(filepath.Join("testdata", "json", "1_single_object.input.json"))
 	if err != nil {
 		t.Fatalf("read sample input: %v", err)
 	}
@@ -394,8 +384,7 @@ func TestTransform_JSONToJSON_Passthrough(t *testing.T) {
 func TestTransform_EDIToEDI_Passthrough(t *testing.T) {
 	t.Helper()
 
-	inputPath := filepath.Join("..", "omniparser", "extensions", "omniv21", "samples", "edi", "1_canadapost_edi_214.input.txt")
-	input, err := os.ReadFile(inputPath)
+	input, err := os.ReadFile(filepath.Join("testdata", "edi", "1_canadapost_edi_214.input.txt"))
 	if err != nil {
 		t.Fatalf("read sample input: %v", err)
 	}
@@ -422,8 +411,7 @@ func TestTransform_EDIToEDI_Passthrough(t *testing.T) {
 func TestTransform_XMLToXML_Passthrough(t *testing.T) {
 	t.Helper()
 
-	inputPath := filepath.Join("..", "omniparser", "extensions", "omniv21", "samples", "xml", "2_multiple_objects.input.xml")
-	input, err := os.ReadFile(inputPath)
+	input, err := os.ReadFile(filepath.Join("testdata", "xml", "2_multiple_objects.input.xml"))
 	if err != nil {
 		t.Fatalf("read sample input: %v", err)
 	}
@@ -511,13 +499,11 @@ func TestTransform_JSONToCSV_UsesOmniparserSample(t *testing.T) {
 func TestTransform_CSVToJSON_UsesOmniparserSample(t *testing.T) {
 	t.Helper()
 
-	schemaPath := filepath.Join("..", "omniparser", "extensions", "omniv21", "samples", "csv2", "1_single_row.schema.json")
-	inputPath := filepath.Join("..", "omniparser", "extensions", "omniv21", "samples", "csv2", "1_single_row.input.csv")
-	schemaBase, err := os.ReadFile(schemaPath)
+	schemaBase, err := os.ReadFile(filepath.Join("testdata", "csv2", "1_single_row.schema.json"))
 	if err != nil {
 		t.Fatalf("read sample schema: %v", err)
 	}
-	input, err := os.ReadFile(inputPath)
+	input, err := os.ReadFile(filepath.Join("testdata", "csv2", "1_single_row.input.csv"))
 	if err != nil {
 		t.Fatalf("read sample input: %v", err)
 	}
@@ -572,13 +558,11 @@ func TestTransform_CSVToJSON_UsesOmniparserSample(t *testing.T) {
 func TestTransform_XMLToJSON_UsesOmniparserSample(t *testing.T) {
 	t.Helper()
 
-	schemaPath := filepath.Join("..", "omniparser", "extensions", "omniv21", "samples", "xml", "2_multiple_objects.schema.json")
-	inputPath := filepath.Join("..", "omniparser", "extensions", "omniv21", "samples", "xml", "2_multiple_objects.input.xml")
-	schemaBase, err := os.ReadFile(schemaPath)
+	schemaBase, err := os.ReadFile(filepath.Join("testdata", "xml", "2_multiple_objects.schema.json"))
 	if err != nil {
 		t.Fatalf("read sample schema: %v", err)
 	}
-	input, err := os.ReadFile(inputPath)
+	input, err := os.ReadFile(filepath.Join("testdata", "xml", "2_multiple_objects.input.xml"))
 	if err != nil {
 		t.Fatalf("read sample input: %v", err)
 	}
@@ -637,8 +621,7 @@ func TestTransform_XMLToJSON_UsesOmniparserSample(t *testing.T) {
 func TestTransform_XMLToCSV_UsesOmniparserSample(t *testing.T) {
 	t.Helper()
 
-	inputPath := filepath.Join("..", "omniparser", "extensions", "omniv21", "samples", "xml", "2_multiple_objects.input.xml")
-	input, err := os.ReadFile(inputPath)
+	input, err := os.ReadFile(filepath.Join("testdata", "xml", "2_multiple_objects.input.xml"))
 	if err != nil {
 		t.Fatalf("read sample input: %v", err)
 	}
@@ -747,13 +730,11 @@ func TestTransform_JSONToXML_UsesOmniparserSample(t *testing.T) {
 func TestTransform_CSVToXML_UsesOmniparserSample(t *testing.T) {
 	t.Helper()
 
-	schemaPath := filepath.Join("..", "omniparser", "extensions", "omniv21", "samples", "csv2", "1_single_row.schema.json")
-	inputPath := filepath.Join("..", "omniparser", "extensions", "omniv21", "samples", "csv2", "1_single_row.input.csv")
-	schemaBase, err := os.ReadFile(schemaPath)
+	schemaBase, err := os.ReadFile(filepath.Join("testdata", "csv2", "1_single_row.schema.json"))
 	if err != nil {
 		t.Fatalf("read sample schema: %v", err)
 	}
-	input, err := os.ReadFile(inputPath)
+	input, err := os.ReadFile(filepath.Join("testdata", "csv2", "1_single_row.input.csv"))
 	if err != nil {
 		t.Fatalf("read sample input: %v", err)
 	}
@@ -795,13 +776,11 @@ func TestTransform_CSVToXML_UsesOmniparserSample(t *testing.T) {
 func TestTransform_EDIToXML_UsesOmniparserSample(t *testing.T) {
 	t.Helper()
 
-	schemaPath := filepath.Join("..", "omniparser", "extensions", "omniv21", "samples", "edi", "1_canadapost_edi_214.schema.json")
-	inputPath := filepath.Join("..", "omniparser", "extensions", "omniv21", "samples", "edi", "1_canadapost_edi_214.input.txt")
-	schemaBase, err := os.ReadFile(schemaPath)
+	schemaBase, err := os.ReadFile(filepath.Join("testdata", "edi", "1_canadapost_edi_214.schema.json"))
 	if err != nil {
 		t.Fatalf("read sample schema: %v", err)
 	}
-	input, err := os.ReadFile(inputPath)
+	input, err := os.ReadFile(filepath.Join("testdata", "edi", "1_canadapost_edi_214.input.txt"))
 	if err != nil {
 		t.Fatalf("read sample input: %v", err)
 	}
@@ -892,13 +871,11 @@ func TestTransform_JSONToText_UsesOmniparserSample(t *testing.T) {
 func TestTransform_CSVToText_UsesOmniparserSample(t *testing.T) {
 	t.Helper()
 
-	schemaPath := filepath.Join("..", "omniparser", "extensions", "omniv21", "samples", "csv2", "1_single_row.schema.json")
-	inputPath := filepath.Join("..", "omniparser", "extensions", "omniv21", "samples", "csv2", "1_single_row.input.csv")
-	schemaBase, err := os.ReadFile(schemaPath)
+	schemaBase, err := os.ReadFile(filepath.Join("testdata", "csv2", "1_single_row.schema.json"))
 	if err != nil {
 		t.Fatalf("read sample schema: %v", err)
 	}
-	input, err := os.ReadFile(inputPath)
+	input, err := os.ReadFile(filepath.Join("testdata", "csv2", "1_single_row.input.csv"))
 	if err != nil {
 		t.Fatalf("read sample input: %v", err)
 	}
@@ -936,13 +913,11 @@ func TestTransform_CSVToText_UsesOmniparserSample(t *testing.T) {
 func TestTransform_EDIToText_UsesOmniparserSample(t *testing.T) {
 	t.Helper()
 
-	schemaPath := filepath.Join("..", "omniparser", "extensions", "omniv21", "samples", "edi", "1_canadapost_edi_214.schema.json")
-	inputPath := filepath.Join("..", "omniparser", "extensions", "omniv21", "samples", "edi", "1_canadapost_edi_214.input.txt")
-	schemaBase, err := os.ReadFile(schemaPath)
+	schemaBase, err := os.ReadFile(filepath.Join("testdata", "edi", "1_canadapost_edi_214.schema.json"))
 	if err != nil {
 		t.Fatalf("read sample schema: %v", err)
 	}
-	input, err := os.ReadFile(inputPath)
+	input, err := os.ReadFile(filepath.Join("testdata", "edi", "1_canadapost_edi_214.input.txt"))
 	if err != nil {
 		t.Fatalf("read sample input: %v", err)
 	}
@@ -984,13 +959,11 @@ func TestTransform_EDIToText_UsesOmniparserSample(t *testing.T) {
 func TestTransform_XMLToText_UsesOmniparserSample(t *testing.T) {
 	t.Helper()
 
-	schemaPath := filepath.Join("..", "omniparser", "extensions", "omniv21", "samples", "xml", "2_multiple_objects.schema.json")
-	inputPath := filepath.Join("..", "omniparser", "extensions", "omniv21", "samples", "xml", "2_multiple_objects.input.xml")
-	schemaBase, err := os.ReadFile(schemaPath)
+	schemaBase, err := os.ReadFile(filepath.Join("testdata", "xml", "2_multiple_objects.schema.json"))
 	if err != nil {
 		t.Fatalf("read sample schema: %v", err)
 	}
-	input, err := os.ReadFile(inputPath)
+	input, err := os.ReadFile(filepath.Join("testdata", "xml", "2_multiple_objects.input.xml"))
 	if err != nil {
 		t.Fatalf("read sample input: %v", err)
 	}

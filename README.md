@@ -1,31 +1,9 @@
-# GitHub Repository Description
-
-## Short Description (for GitHub "About" section)
-```
-Multi-format data transformation library for Go. Transform between JSON, CSV, EDI, XML, and text using schema-driven configurations. Built on omniparser with 21 supported transform combinations.
-```
-
-## Repository Topics/Tags
-```
-golang
-data-transformation
-edi
-csv
-json
-xml
-etl
-data-processing
-omniparser
-schema-driven
-edifact
-x12
-```
-
-## Detailed Description (for README introduction)
-
 # Omniwriter
 
-**Production-ready multi-format data transformation library for Go**
+> ⚠️ **Disclaimer:** This project was largely created via AI-assisted development.
+> It is an experimental project and may contain security quirks or require further optimization.
+
+**Multi-format data transformation library for Go**
 
 Omniwriter extends [omniparser](https://github.com/jf-tech/omniparser) from a JSON-output parser into a comprehensive transformation library supporting conversions between JSON, CSV, EDI, XML, and text formats.
 
@@ -64,7 +42,7 @@ os.WriteFile("output.csv", result.Output, 0644)
 ## 📊 Supported Transformations
 
 ```
-          JSON  CSV  EDI  XML  Text
+          JSON   CSV  EDI  XML  Text
 JSON       ✅    ✅   ✅   ✅    ✅
 CSV        ✅    ✅   ✅   ✅    ✅
 EDI        ✅    ✅   ✅   ✅    ✅

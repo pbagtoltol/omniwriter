@@ -14,8 +14,8 @@ type OutputDeclaration struct {
 	ComponentDelimiter string `json:"component_delimiter,omitempty"`
 
 	// CSV options
-	Delimiter string       `json:"delimiter,omitempty"`
-	Columns   []CSVColumn  `json:"columns,omitempty"`
+	Delimiter string      `json:"delimiter,omitempty"`
+	Columns   []CSVColumn `json:"columns,omitempty"`
 }
 
 // CSVColumn defines a CSV column mapping.

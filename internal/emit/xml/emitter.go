@@ -69,8 +69,8 @@ func mapToXMLElement(name string, data interface{}) interface{} {
 		// Create a generic XML element
 		type XMLElement struct {
 			XMLName xml.Name
-			Attrs   []xml.Attr     `xml:",attr"`
-			Content []interface{}  `xml:",any"`
+			Attrs   []xml.Attr    `xml:",attr"`
+			Content []interface{} `xml:",any"`
 		}
 
 		elem := XMLElement{

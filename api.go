@@ -9,12 +9,12 @@ import (
 
 // Re-export types from pkg/omniwriter for backward compatibility
 type (
-	Format          = api.Format
-	Options         = api.Options
-	Warning         = api.Warning
-	Stats           = api.Stats
+	Format           = api.Format
+	Options          = api.Options
+	Warning          = api.Warning
+	Stats            = api.Stats
 	TransformRequest = api.TransformRequest
-	TransformResult = api.TransformResult
+	TransformResult  = api.TransformResult
 )
 
 // Re-export constants

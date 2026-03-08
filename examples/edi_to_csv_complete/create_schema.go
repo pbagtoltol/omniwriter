@@ -42,7 +42,7 @@ func main() {
 		panic(err)
 	}
 
-	if err := os.WriteFile("schema.json", output, 0644)	; err != nil {
+	if err := os.WriteFile("schema.json", output, 0644); err != nil {
 		panic(err)
 	}
 

@@ -73,6 +73,8 @@ github.com/ianlancetaylor/demangle v0.0.0-20220319035150-800ac71e25c2/go.mod h1:
 github.com/inconshreveable/mousetrap v1.0.0/go.mod h1:PxqpIevigyE2G7u3NXJIT2ANytuPF1OarO4DADm73n8=
 github.com/jf-tech/go-corelib v0.0.14 h1:PXS6ApXGhZk+9TTxVFiQe9YYJV5liAzjmvotY7l4dCA=
 github.com/jf-tech/go-corelib v0.0.14/go.mod h1:0+Fejzd53JtexKE5VI8I06WiBNATLIURRJgPrv4Yysg=
+github.com/jf-tech/omniparser v1.0.5 h1:ZFQZfJVDRDcocsXR1fr6x+qZF14NYCnOwT88jIXdqVI=
+github.com/jf-tech/omniparser v1.0.5/go.mod h1:TVYFVFjTa0HcrT982JiwUaSEhZRylBmo0U26ZZ9bE1w=
 github.com/jonboulle/clockwork v0.1.0/go.mod h1:Ii8DK3G1RaLaWxj9trq07+26W01tbo22gdxWY5EU2bo=
 github.com/julienschmidt/httprouter v1.2.0/go.mod h1:SYymIcj16QtmaHHD7aYtjjsJG7VTCxuUUipMqKk8s4w=
 github.com/kisielk/errcheck v1.1.0/go.mod h1:EZBBE59ingxPouuu3KfxchcWSUPOHkagtvWXihfKN4Q=

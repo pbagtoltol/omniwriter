@@ -15,7 +15,7 @@ require (
 	github.com/google/uuid v1.1.2 // indirect
 	github.com/hashicorp/golang-lru v0.5.4 // indirect
 	github.com/jf-tech/go-corelib v0.0.14 // indirect
-	github.com/jf-tech/omniparser v0.0.0 // indirect
+	github.com/jf-tech/omniparser v1.0.5 // indirect
 	github.com/tkuchiki/go-timezone v0.2.0 // indirect
 	github.com/xeipuuv/gojsonpointer v0.0.0-20180127040702-4e3ac2762d5f // indirect
 	github.com/xeipuuv/gojsonreference v0.0.0-20180127040603-bd5ef7bd5415 // indirect
